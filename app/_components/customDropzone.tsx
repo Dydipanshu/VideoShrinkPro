@@ -5,6 +5,7 @@ import ReactDropZone from 'react-dropzone'
 import { toast } from 'sonner';
 
 import { Input } from "@/components/ui/input"
+import Image from 'next/image';
 
 type CustomDropZoneProps = {
     handleUpload: (files: File) => void;
@@ -64,6 +65,7 @@ const CustomDropZone = ({
                     <Input
                         {...getInputProps()}
                     />
+                    <Image src={"video.svg"} alt='Video' width={100} height={100}/>
                     <h3
                         className='text-center mt-5'
                     >

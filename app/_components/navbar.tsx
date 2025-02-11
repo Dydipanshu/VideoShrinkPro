@@ -8,7 +8,7 @@ const Navbar = () => {
             <div className="w-full border border-gray-200 p-3 lg:p-4 max-w-5xl bg-gray-50/90 backdrop-blur-lg sm:grid flex justify-between sm:grid-cols-3 items-center mx-auto rounded-2xl">
                 <Link href="/" className="flex flex-row items-center gap-2">
                     <Image src={"logo.svg"} alt="Logo" width={40} height={40} />
-                    <p className="font-semibold sm:text-xl bg-gradient-to-r from-gray-500 via-black to-orange-500 text-transparent bg-clip-text">
+                    <p className="font-semibold sm:text-xl bg-gradient-to-r from-black via-gray-800 to-orange-500 text-transparent bg-clip-text">
                         VideoShrinkPro
                     </p>
                 </Link>
