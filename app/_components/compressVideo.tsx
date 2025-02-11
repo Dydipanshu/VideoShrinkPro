@@ -8,6 +8,7 @@ import { FileMetadata } from "@/utils/metadata"
 
 import CustomDropZone from "./customDropzone"
 import VideoPreview from "./videoPreview"
+import EditFileMetadata from "./editFileMetadata"
 
 const CompressVideo = () => {
 
@@ -43,6 +44,25 @@ const CompressVideo = () => {
                     )
                 }
             </motion.div>
+
+            <AnimatePresence
+                mode="popLayout"
+            >
+                <motion.div
+                    className="border rounded-3xl col-span-3 flex w-full md:h-full bg-gray-50/35 p-4 relative"
+                >
+                    <div
+                        className="flex flex-col gap-4 w-full"
+                    >
+                        {videoFile && (
+                            <EditFileMetadata
+                                videoFile={videoFile}
+                                onClear={() => { }}
+                            />
+                        )}
+                    </div>
+                </motion.div>
+            </AnimatePresence>
         </>
     )
 }
