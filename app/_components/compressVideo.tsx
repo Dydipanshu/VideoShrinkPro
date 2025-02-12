@@ -11,6 +11,7 @@ import VideoPreview from "../utilities/videoPreview"
 import ShowFileMetadata from "../utilities/showFileMetadata"
 import VideoTrim from "../utilities/videoTrim"
 import { h2 } from "framer-motion/client"
+import VideoInputControl from "../utilities/videoInputControls"
 
 const CompressVideo = () => {
 
@@ -68,23 +69,28 @@ const CompressVideo = () => {
                     >
                         {
                             videoFile ? (
-                            <>
-                                <ShowFileMetadata
-                                    videoFile={videoFile}
-                                    onClear={() => { }}
-                                />
-                                <VideoTrim
-                                    disabled={false}
-                                    onVideoSettingsChange={setVideoSettings}
-                                    videoSettings={videoSettings}
-                                />
-                            </>
+                                <>
+                                    <ShowFileMetadata
+                                        videoFile={videoFile}
+                                        onClear={() => { }}
+                                    />
+                                    <VideoTrim
+                                        disabled={false}
+                                        onVideoSettingsChange={setVideoSettings}
+                                        videoSettings={videoSettings}
+                                    />
+                                    <VideoInputControl
+                                        disabled={false}
+                                        onVideoSettingsChange={setVideoSettings}
+                                        videoSettings={videoSettings}
+                                    />
+                                </>
                             ) : (
-                                    <h2 className="font-medium text-center my-auto">
-                                        Select a video to start
-                                    </h2>
-                        )
-                    }
+                                <h2 className="font-medium text-center my-auto">
+                                    Select a video to start
+                                </h2>
+                            )
+                        }
                     </div>
                 </motion.div>
             </AnimatePresence>
