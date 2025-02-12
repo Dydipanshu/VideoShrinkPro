@@ -4,7 +4,7 @@ import { FileMetadata } from "@/utils/metadata"
 import { Button } from '@/components/ui/button';
 import { bytesToSize } from '@/utils/bytesToSize';
 
-const EditFileMetadata = ({
+const ShowFileMetadata = ({
   videoFile,
   onClear
 }: {
@@ -39,12 +39,16 @@ const EditFileMetadata = ({
         <div
           className='flex justify-between items-center'
         >
-          <p>File Size</p>
-          <p>{ bytesToSize(videoFile.fileSize) }</p>
+          <p>
+            File Size
+          </p>
+          <p>
+            {bytesToSize(videoFile.fileSize)}
+          </p>
         </div>
       </div>
     </motion.div>
   )
 }
 
-export default EditFileMetadata
+export default ShowFileMetadata

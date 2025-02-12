@@ -4,16 +4,28 @@ import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
 import { acceptedVideoFiles } from "@/utils/formats"
-import { FileMetadata } from "@/utils/metadata"
+import { FileMetadata, QualityType, UtilitiesSettings, VideoFormats } from "@/utils/metadata"
 
 import CustomDropZone from "./customDropzone"
-import VideoPreview from "./videoPreview"
-import EditFileMetadata from "./editFileMetadata"
+import VideoPreview from "../utilities/videoPreview"
+import ShowFileMetadata from "../utilities/showFileMetadata"
+import VideoTrim from "../utilities/videoTrim"
+import { h2 } from "framer-motion/client"
 
 const CompressVideo = () => {
 
     // state to store the user's file
     const [videoFile, setVideoFile] = useState<FileMetadata>()
+
+    const [videoSettings, setVideoSettings] = useState<UtilitiesSettings>({
+        quality: QualityType.High,
+        videoType: VideoFormats.MP4,
+        customStartTime: 0,
+        customEndTime: 0,
+        removeAudio: false,
+        twitterFormat: false,
+        whatsappFormat: false
+    })
 
     const handleUpload = (file: File) => {
         setVideoFile({
@@ -54,12 +66,25 @@ const CompressVideo = () => {
                     <div
                         className="flex flex-col gap-4 w-full"
                     >
-                        {videoFile && (
-                            <EditFileMetadata
-                                videoFile={videoFile}
-                                onClear={() => { }}
-                            />
-                        )}
+                        {
+                            videoFile ? (
+                            <>
+                                <ShowFileMetadata
+                                    videoFile={videoFile}
+                                    onClear={() => { }}
+                                />
+                                <VideoTrim
+                                    disabled={false}
+                                    onVideoSettingsChange={setVideoSettings}
+                                    videoSettings={videoSettings}
+                                />
+                            </>
+                            ) : (
+                                    <h2 className="font-medium text-center my-auto">
+                                        Select a video to start
+                                    </h2>
+                        )
+                    }
                     </div>
                 </motion.div>
             </AnimatePresence>
