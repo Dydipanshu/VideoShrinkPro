@@ -1,8 +1,16 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import {
+    useEffect,
+    useRef,
+    useState
+} from "react"
+import {
+    AnimatePresence,
+    motion
+} from "framer-motion"
 import { toast } from "sonner"
+
 import { FFmpeg } from "@ffmpeg/ffmpeg"
 import { toBlobURL } from "@ffmpeg/util"
 
@@ -15,12 +23,15 @@ import {
 } from "@/utils/metadata"
 
 import CustomDropZone from "./customDropzone"
+import CompressionProgress from "./compressionProgress"
 
 import VideoPreview from "../utilities/videoPreview"
 import ShowFileMetadata from "../utilities/showFileMetadata"
 import VideoTrim from "../utilities/videoTrim"
 import VideoInputControl from "../utilities/videoInputControls"
+
 import { Button } from "@/components/ui/button"
+import { convertFile } from "@/utils/mainConverter"
 
 const CompressVideo = () => {
 
@@ -30,7 +41,7 @@ const CompressVideo = () => {
     // state to keep track of compression
     const [progress, setProgress] = useState<number>(0)
     const [time, setTime] = useState<{
-        startTime?: number,
+        startTime?: Date,
         elapsedSeconds?: number
     }>({
         elapsedSeconds: 0
@@ -96,6 +107,53 @@ const CompressVideo = () => {
         }
     }, []);
 
+    const compress = async () => {
+        if (!videoFile) return
+
+        try {
+            setTime({ ...time, startTime: new Date() })
+            setStatus("converting")
+
+            ffmpegRef.current.on("progress", ({ progress: completion, time }) => {
+                const percentage = completion * 100
+                setProgress(percentage)
+            })
+
+            ffmpegRef.current.on("log", (message) => {
+                console.log(message)
+            })
+
+            const { url, output, outputBlob } = await convertFile({ 
+                ffmpeg: ffmpegRef.current, 
+                actionFile: videoFile, 
+                videoSettings 
+            });
+
+            setVideoFile({
+                ...videoFile,
+                url,
+                output,
+                outputBlob
+            })
+            setTime((time) => ({
+                ...time,
+                startTime: undefined
+            }))
+            setStatus("converted")
+            setProgress(0)
+
+        } catch (error) {
+            console.log(error)
+            setStatus("notStarted")
+            setProgress(0)
+            setTime({
+                elapsedSeconds: 0,
+                startTime: undefined
+            })
+
+            toast.error("Some error occured while compressing video. See console for more information")
+        }
+    }
 
     return (
         <>
@@ -167,15 +225,22 @@ const CompressVideo = () => {
                             exit={{ scale: 0.8, opacity: 0 }}
                             key={"button"}
                             transition={{ type: "tween" }}
-                            className="'rounded-2xl p-3 h-fit m-auto"
+                            className="rounded-2xl p-3 h-fit bg-gray-100 border border-gray-200"
                         >
+                            {status === "converting" && (
+                               <CompressionProgress
+                                progress={progress}
+                                seconds={time.elapsedSeconds!}
+                            /> 
+                            )} 
                             {
                                 (status === "notStarted" || status === "converting")
                                 &&
                                 (
                                     <Button
                                         variant="default"
-                                        onClick={() => { }}
+                                        onClick={compress}
+                                        className="mx-20"
                                     >
                                         Compress Video
                                     </Button>

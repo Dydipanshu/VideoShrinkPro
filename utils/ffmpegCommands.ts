@@ -1,4 +1,9 @@
-import { UtilitiesSettings, VideoFormats } from "./metadata"
+import { getFileType } from "./mainConverter"
+import {
+    UtilitiesSettings,
+    VideoFormats
+} from "./metadata"
+
 
 export const whatsappFormatCommand = (
     input: string,
