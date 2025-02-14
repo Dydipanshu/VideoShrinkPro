@@ -217,7 +217,7 @@ const CompressVideo = () => {
                                 <>
                                     <ShowFileMetadata
                                         videoFile={videoFile}
-                                        onClear={() => { }}
+                                        onClear={() => window.location.reload()}
                                     />
                                     <VideoTrim
                                         disabled={disabledDuringCompression}
