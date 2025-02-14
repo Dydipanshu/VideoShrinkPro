@@ -32,6 +32,7 @@ import VideoInputControl from "../utilities/videoInputControls"
 
 import { Button } from "@/components/ui/button"
 import { convertFile } from "@/utils/mainConverter"
+import VideoOutput from "./videoOutput"
 
 const CompressVideo = () => {
 
@@ -68,6 +69,23 @@ const CompressVideo = () => {
             isError: false
         })
     }
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout
+        // Declares a variable to store the interval
+
+        timer = setInterval(() => {
+            const endTime = new Date()
+
+            if (time?.startTime) {
+                const timeDifference = endTime.getTime() - time.startTime?.getTime()
+
+                setTime({ ...time, elapsedSeconds: timeDifference },)
+            }
+        }, 1000)
+
+        return () => clearInterval(timer)
+    }, [time])
 
     // FFmpeg configurations
     const ffmpegRef = useRef(new FFmpeg())
@@ -123,10 +141,10 @@ const CompressVideo = () => {
                 console.log(message)
             })
 
-            const { url, output, outputBlob } = await convertFile({ 
-                ffmpeg: ffmpegRef.current, 
-                actionFile: videoFile, 
-                videoSettings 
+            const { url, output, outputBlob } = await convertFile({
+                ffmpeg: ffmpegRef.current,
+                actionFile: videoFile,
+                videoSettings
             });
 
             setVideoFile({
@@ -228,11 +246,11 @@ const CompressVideo = () => {
                             className="rounded-2xl p-3 h-fit bg-gray-100 border border-gray-200"
                         >
                             {status === "converting" && (
-                               <CompressionProgress
-                                progress={progress}
-                                seconds={time.elapsedSeconds!}
-                            /> 
-                            )} 
+                                <CompressionProgress
+                                    progress={progress}
+                                    seconds={time.elapsedSeconds!}
+                                />
+                            )}
                             {
                                 (status === "notStarted" || status === "converting")
                                 &&
@@ -247,6 +265,14 @@ const CompressVideo = () => {
                                 )
                             }
                         </motion.div>
+                        {
+                            status === "converted" && videoFile && (
+                                <VideoOutput
+                                    timeTaken={time.elapsedSeconds!}
+                                    videoFile={videoFile}
+                                />
+                            )
+                        }
                     </div>
                 </motion.div>
             </AnimatePresence>

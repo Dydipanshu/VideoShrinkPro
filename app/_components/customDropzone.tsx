@@ -32,7 +32,7 @@ const CustomDropZone = ({
     const onError = () => {
         handleExitHover()
         toast.error("Some error occured while uploading your file(s)", {
-            description: "Supported formats: Audio, Video and Images",
+            description: "Supported formats: Video",
             duration: 3000
         })
     }
@@ -40,7 +40,7 @@ const CustomDropZone = ({
     const onDropRejected = () => {
         handleExitHover()
         toast.error("Some error occured while uploading your file(s)", {
-            description: "Supported formats: Audio, Video and Images",
+            description: "Supported formats: Video",
             duration: 3000
         })
     }
