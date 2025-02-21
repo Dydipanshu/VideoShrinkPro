@@ -47,7 +47,7 @@ const VideoTrim = ({
         }
 
 
-    }, [])
+    })
 
     return (
         <motion.div

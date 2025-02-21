@@ -71,10 +71,10 @@ const CompressVideo = () => {
     }
 
     useEffect(() => {
-        let timer: NodeJS.Timeout
+        // const timer: NodeJS.Timeout
         // Declares a variable to store the interval
 
-        timer = setInterval(() => {
+        const timer: NodeJS.Timeout = setInterval(() => {
             const endTime = new Date()
 
             if (time?.startTime) {
@@ -123,7 +123,7 @@ const CompressVideo = () => {
             currentStatus();
             hasRun.current = true;
         }
-    }, []);
+    });
 
     const compress = async () => {
         if (!videoFile) return
